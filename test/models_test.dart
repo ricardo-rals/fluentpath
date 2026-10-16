@@ -10,7 +10,9 @@ void main() {
       'titulo': 'Verb To Be',
       'conteudo': 'I am, you are, he is.',
     });
+
     expect(dica.titulo, 'Verb To Be');
+
     expect(dica.conteudo, 'I am, you are, he is.');
   });
 
@@ -20,8 +22,11 @@ void main() {
       'data': '2026-10-20T14:00:00',
       'status': 'confirmada',
     });
+
     expect(aula.titulo, 'Conversacao');
+
     expect(aula.data, DateTime(2026, 10, 20, 14));
+
     expect(aula.status, StatusAula.confirmada);
   });
 

@@ -10,7 +10,9 @@ void main() {
 
   test('servico carrega as dicas do JSON', () async {
     final dicas = await servico.carregarDicas();
+
     expect(dicas, isNotEmpty);
+
     expect(dicas.first.titulo, 'Verb To Be');
   });
 
@@ -20,9 +22,13 @@ void main() {
 
   test('servico guarda e limpa o usuario da sessao', () {
     expect(servico.logado, isFalse);
+
     servico.login(const Usuario(nome: 'aluno'));
+
     expect(servico.usuario?.nome, 'aluno');
+
     servico.logout();
+
     expect(servico.logado, isFalse);
   });
 }

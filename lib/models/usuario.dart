@@ -1,4 +1,3 @@
-/// O aluno logado no app.
 class Usuario {
   final String nome;
 

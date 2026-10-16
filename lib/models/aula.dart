@@ -1,10 +1,10 @@
-/// Situacao de uma aula marcada pelo aluno.
 enum StatusAula { agendada, confirmada }
 
-/// Uma aula do aluno, com titulo, data e status.
 class Aula {
   final String titulo;
+
   final DateTime data;
+
   StatusAula status;
 
   Aula({

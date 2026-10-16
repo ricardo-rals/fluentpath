@@ -1,6 +1,6 @@
-/// Uma dica de idioma, conteudo publico do app.
 class Dica {
   final String titulo;
+
   final String conteudo;
 
   const Dica({required this.titulo, required this.conteudo});

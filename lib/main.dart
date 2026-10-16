@@ -8,14 +8,14 @@ void main() {
   runApp(const FluentPathApp());
 }
 
-/// Cores da identidade visual do FluentPath.
 class CoresApp {
   static const primaria = Color(0xFF2E7D6B);
+
   static const destaque = Color(0xFFF2A541);
+
   static const fundo = Color(0xFFF6F8F7);
 }
 
-/// Raiz do aplicativo FluentPath: servico de dados, tema e rotas nomeadas.
 class FluentPathApp extends StatelessWidget {
   const FluentPathApp({super.key});
 
