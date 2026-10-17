@@ -29,7 +29,8 @@ class AcessoProtegido extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(Icons.lock_outline, size: 64, color: tema.colorScheme.primary),
+              Icon(Icons.lock_outline,
+                  size: 64, color: tema.colorScheme.primary),
               const SizedBox(height: 16),
               Text(
                 'Esta área é só para alunos',

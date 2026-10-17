@@ -12,7 +12,7 @@ class BotaoSair extends StatelessWidget {
 
     context.read<ServicoDados>().logout();
 
-    Navigator.pushNamedAndRemoveUntil(context, Rotas.dicas, (_) => false);
+    Navigator.pushNamedAndRemoveUntil(context, Rotas.inicial, (_) => false);
 
     mensageiro
       ..hideCurrentSnackBar()

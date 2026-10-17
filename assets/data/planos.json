@@ -1,0 +1,23 @@
+[
+  {
+    "nome": "Essencial",
+    "aulasPorSemana": 1,
+    "preco": 149,
+    "descricao": "Para começar no seu ritmo",
+    "destaque": false
+  },
+  {
+    "nome": "Intensivo",
+    "aulasPorSemana": 2,
+    "preco": 259,
+    "descricao": "Mais prática para evoluir rápido",
+    "destaque": true
+  },
+  {
+    "nome": "Fluente",
+    "aulasPorSemana": 3,
+    "preco": 349,
+    "descricao": "Para acelerar a fluência",
+    "destaque": false
+  }
+]

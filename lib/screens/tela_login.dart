@@ -42,7 +42,7 @@ class _TelaLoginState extends State<TelaLogin> {
       return;
     }
 
-    Navigator.pushReplacementNamed(context, Rotas.boasVindas);
+    Navigator.pushNamedAndRemoveUntil(context, Rotas.boasVindas, (_) => false);
   }
 
   @override
@@ -54,7 +54,8 @@ class _TelaLoginState extends State<TelaLogin> {
       body: ListView(
         padding: const EdgeInsets.all(24),
         children: [
-          Icon(Icons.school_outlined, size: 72, color: tema.colorScheme.primary),
+          Icon(Icons.school_outlined,
+              size: 72, color: tema.colorScheme.primary),
           const SizedBox(height: 12),
           Text(
             'Área do aluno',

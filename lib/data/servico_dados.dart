@@ -5,11 +5,15 @@ import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/aula.dart';
+import '../models/contato.dart';
 import '../models/dica.dart';
+import '../models/plano.dart';
 import '../models/usuario.dart';
 
 class ServicoDados extends ChangeNotifier {
-  static const _usuarioValido = 'aluno';
+  static const _usuarioValido = 'Aluno';
+
+  static const _planoDoAluno = 'Essencial';
 
   static const _senhaValida = '1234';
 
@@ -25,10 +29,26 @@ class ServicoDados extends ChangeNotifier {
 
   List<Aula> get aulas => List.unmodifiable(_aulas ?? []);
 
+  final List<Contato> _contatos = [];
+
+  List<Contato> get contatos => List.unmodifiable(_contatos);
+
   Future<List<Dica>> carregarDicas() async {
     final lista = await _lerLista('assets/data/dicas.json');
 
     return lista.map((json) => Dica.fromJson(json)).toList();
+  }
+
+  Future<List<Plano>> carregarPlanos() async {
+    final lista = await _lerLista('assets/data/planos.json');
+
+    return lista.map((json) => Plano.fromJson(json)).toList();
+  }
+
+  Future<void> enviarContato(Contato contato) async {
+    _contatos.add(contato);
+
+    notifyListeners();
   }
 
   Future<List<Aula>> carregarAulas() async {
@@ -108,7 +128,7 @@ class ServicoDados extends ChangeNotifier {
       return false;
     }
 
-    login(Usuario(nome: usuario));
+    login(Usuario(nome: usuario, plano: _planoDoAluno));
 
     return true;
   }

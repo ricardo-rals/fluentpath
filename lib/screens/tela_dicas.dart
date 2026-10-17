@@ -87,7 +87,10 @@ class _AcaoSessao extends StatelessWidget {
           IconButton(
             icon: const Icon(Icons.home_outlined),
             tooltip: 'Início',
-            onPressed: () => Navigator.pushNamed(context, Rotas.boasVindas),
+            onPressed: () => Navigator.popUntil(
+              context,
+              ModalRoute.withName(Rotas.boasVindas),
+            ),
           ),
           const BotaoSair(),
         ],

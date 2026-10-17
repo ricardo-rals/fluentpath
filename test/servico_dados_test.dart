@@ -5,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:fluentpath/data/servico_dados.dart';
 import 'package:fluentpath/models/aula.dart';
+import 'package:fluentpath/models/contato.dart';
 import 'package:fluentpath/models/usuario.dart';
 
 void main() {
@@ -30,6 +31,30 @@ void main() {
 
   test('servico carrega as aulas do JSON', () async {
     expect(await servico.carregarAulas(), hasLength(3));
+  });
+
+  test('servico carrega os planos do JSON', () async {
+    final planos = await servico.carregarPlanos();
+
+    expect(planos.map((plano) => plano.nome),
+        ['Essencial', 'Intensivo', 'Fluente']);
+
+    expect(planos.where((plano) => plano.destaque), hasLength(1));
+  });
+
+  test('servico guarda o contato enviado', () async {
+    await servico.enviarContato(
+      const Contato(
+        nome: 'Maria',
+        email: 'maria@email.com',
+        telefone: '71999999999',
+        plano: 'Intensivo',
+      ),
+    );
+
+    expect(servico.contatos, hasLength(1));
+
+    expect(servico.contatos.first.plano, 'Intensivo');
   });
 
   test('servico guarda e limpa o usuario da sessao', () {

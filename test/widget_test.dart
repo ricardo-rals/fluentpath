@@ -21,10 +21,55 @@ Future<void> esperarTexto(WidgetTester tester, String texto) async {
   }
 }
 
-Future<void> entrarComoAluno(WidgetTester tester) async {
-  await tester.tap(find.byIcon(Icons.login));
+Future<void> esperarCarregar(WidgetTester tester) async {
+  final carregando = find.byType(CircularProgressIndicator);
+
+  for (var i = 0; i < 20 && carregando.evaluate().isNotEmpty; i++) {
+    await tester.runAsync(
+      () => Future.delayed(const Duration(milliseconds: 50)),
+    );
+
+    await tester.pump();
+  }
+}
+
+// rola a tela ate o alvo quando ele ainda nao foi construido pela lista
+Future<void> mostrar(WidgetTester tester, Finder alvo) async {
+  if (alvo.evaluate().isEmpty) {
+    await tester.scrollUntilVisible(
+      alvo,
+      200,
+      scrollable: find.byType(Scrollable).first,
+    );
+  }
+
+  await tester.ensureVisible(alvo);
 
   await tester.pumpAndSettle();
+}
+
+Future<void> tocar(WidgetTester tester, Finder alvo) async {
+  await mostrar(tester, alvo);
+
+  await tester.tap(alvo);
+
+  await tester.pumpAndSettle();
+}
+
+Future<void> abrirApp(WidgetTester tester) async {
+  await tester.pumpWidget(const FluentPathApp());
+
+  await esperarCarregar(tester);
+}
+
+Future<void> abrirDicas(WidgetTester tester) async {
+  await tocar(tester, find.text('Ver dicas grátis'));
+
+  await esperarTexto(tester, 'Verb To Be');
+}
+
+Future<void> entrarComoAluno(WidgetTester tester) async {
+  await tocar(tester, find.text('Já sou aluno? Entrar'));
 
   await tester.enterText(find.widgetWithText(TextField, 'Usuário'), 'aluno');
 
@@ -57,29 +102,43 @@ void main() {
     SharedPreferences.setMockInitialValues({});
   });
 
-  testWidgets('App abre na tela de dicas pela rota inicial',
+  testWidgets('App abre na tela inicial com acoes e planos',
       (WidgetTester tester) async {
-    await tester.pumpWidget(const FluentPathApp());
+    await abrirApp(tester);
 
-    expect(find.text('Dicas'), findsOneWidget);
+    expect(find.text('FluentPath'), findsOneWidget);
+
+    expect(find.text('Quero ser aluno'), findsOneWidget);
+
+    expect(find.text('Ver dicas grátis'), findsOneWidget);
+
+    expect(find.text('Já sou aluno? Entrar'), findsOneWidget);
+
+    for (final plano in ['Essencial', 'Intensivo', 'Fluente']) {
+      await mostrar(tester, find.text(plano));
+
+      expect(find.text(plano), findsOneWidget);
+    }
   });
 
   testWidgets('Tela de dicas lista as dicas do JSON sem login',
       (WidgetTester tester) async {
-    await tester.pumpWidget(const FluentPathApp());
+    await abrirApp(tester);
 
-    await esperarTexto(tester, 'Verb To Be');
+    await abrirDicas(tester);
 
     expect(find.text('Verb To Be'), findsOneWidget);
 
     expect(find.text('Simple Past'), findsOneWidget);
+
+    expect(find.text('Minhas aulas'), findsNothing);
   });
 
   testWidgets('Tocar numa dica abre o detalhe com o conteudo dela',
       (WidgetTester tester) async {
-    await tester.pumpWidget(const FluentPathApp());
+    await abrirApp(tester);
 
-    await esperarTexto(tester, 'Verb To Be');
+    await abrirDicas(tester);
 
     await tester.tap(find.text('Simple Past'));
 
@@ -92,22 +151,72 @@ void main() {
     expect(find.textContaining('go → went'), findsOneWidget);
   });
 
-  testWidgets('Deslogado, o botao Minhas aulas nao aparece',
+  testWidgets('Formulario de contato valida, envia e confirma',
       (WidgetTester tester) async {
-    await tester.pumpWidget(const FluentPathApp());
+    await abrirApp(tester);
 
-    expect(find.text('Minhas aulas'), findsNothing);
+    await tocar(tester, find.text('Quero ser aluno'));
 
-    expect(find.byIcon(Icons.login), findsOneWidget);
+    await tocar(tester, find.widgetWithText(ElevatedButton, 'Enviar'));
+
+    expect(find.text('Informe seu nome'), findsOneWidget);
+
+    expect(find.text('Informe um e-mail válido'), findsOneWidget);
+
+    expect(find.text('Informe um telefone com DDD'), findsOneWidget);
+
+    await tester.enterText(
+      find.widgetWithText(TextFormField, 'Nome'),
+      'Maria Souza',
+    );
+
+    await tester.enterText(
+      find.widgetWithText(TextFormField, 'E-mail'),
+      'maria@email.com',
+    );
+
+    await tester.enterText(
+      find.widgetWithText(TextFormField, 'Telefone / WhatsApp'),
+      '(71) 99999-9999',
+    );
+
+    await tocar(tester, find.widgetWithText(ElevatedButton, 'Enviar'));
+
+    expect(find.text('Recebemos seu contato, Maria!'), findsOneWidget);
+
+    await tocar(tester, find.text('Voltar ao início'));
+
+    expect(find.text('Quero ser aluno'), findsOneWidget);
+  });
+
+  testWidgets('Tocar num plano abre o contato com o plano marcado',
+      (WidgetTester tester) async {
+    await abrirApp(tester);
+
+    await tocar(tester, find.text('Intensivo'));
+
+    await esperarTexto(tester, 'Plano de interesse');
+
+    await mostrar(tester, find.widgetWithText(ChoiceChip, 'Intensivo'));
+
+    final chip = tester.widget<ChoiceChip>(
+      find.widgetWithText(ChoiceChip, 'Intensivo'),
+    );
+
+    expect(chip.selected, isTrue);
+
+    final outro = tester.widget<ChoiceChip>(
+      find.widgetWithText(ChoiceChip, 'Essencial'),
+    );
+
+    expect(outro.selected, isFalse);
   });
 
   testWidgets('Login com credencial errada mostra aviso',
       (WidgetTester tester) async {
-    await tester.pumpWidget(const FluentPathApp());
+    await abrirApp(tester);
 
-    await tester.tap(find.byIcon(Icons.login));
-
-    await tester.pumpAndSettle();
+    await tocar(tester, find.text('Já sou aluno? Entrar'));
 
     await tester.enterText(find.widgetWithText(TextField, 'Usuário'), 'aluno');
 
@@ -126,7 +235,7 @@ void main() {
 
   testWidgets('Login com aluno / 1234 abre a pagina de boas-vindas',
       (WidgetTester tester) async {
-    await tester.pumpWidget(const FluentPathApp());
+    await abrirApp(tester);
 
     await entrarComoAluno(tester);
 
@@ -135,11 +244,61 @@ void main() {
     expect(find.text('Dicas'), findsOneWidget);
 
     expect(find.text('Minhas aulas'), findsOneWidget);
+
+    expect(find.text('Planos'), findsOneWidget);
+
+    expect(find.byType(BackButton), findsNothing);
+  });
+
+  testWidgets('Logado, o aluno pede mudanca de plano e volta ao inicio dele',
+      (WidgetTester tester) async {
+    await abrirApp(tester);
+
+    await entrarComoAluno(tester);
+
+    await tocar(tester, find.text('Planos'));
+
+    await esperarCarregar(tester);
+
+    expect(find.text('Seu plano'), findsOneWidget);
+
+    expect(find.text('Mais escolhido'), findsNothing);
+
+    await tocar(tester, find.text('Essencial'));
+
+    expect(find.text('Mudar de plano'), findsNothing);
+
+    await tocar(tester, find.text('Fluente'));
+
+    expect(find.text('Mudar de plano'), findsOneWidget);
+
+    await tester.enterText(
+      find.widgetWithText(TextFormField, 'Nome'),
+      'Aluno Teste',
+    );
+
+    await tester.enterText(
+      find.widgetWithText(TextFormField, 'E-mail'),
+      'aluno@email.com',
+    );
+
+    await tester.enterText(
+      find.widgetWithText(TextFormField, 'Telefone / WhatsApp'),
+      '71999999999',
+    );
+
+    await tocar(tester, find.widgetWithText(ElevatedButton, 'Enviar'));
+
+    expect(find.text('Recebemos seu contato, Aluno!'), findsOneWidget);
+
+    await tocar(tester, find.text('Voltar ao início'));
+
+    expect(find.text('Olá, aluno!'), findsOneWidget);
   });
 
   testWidgets('Boas-vindas leva para as dicas, sem o botao Minhas aulas',
       (WidgetTester tester) async {
-    await tester.pumpWidget(const FluentPathApp());
+    await abrirApp(tester);
 
     await entrarComoAluno(tester);
 
@@ -156,9 +315,9 @@ void main() {
     expect(find.text('Minhas aulas'), findsNothing);
   });
 
-  testWidgets('Sair limpa a sessao e volta ao estado deslogado',
+  testWidgets('Sair limpa a sessao e volta para a tela inicial',
       (WidgetTester tester) async {
-    await tester.pumpWidget(const FluentPathApp());
+    await abrirApp(tester);
 
     await entrarComoAluno(tester);
 
@@ -168,13 +327,15 @@ void main() {
 
     expect(find.text('Você saiu da sua conta'), findsOneWidget);
 
+    await esperarCarregar(tester);
+
     await tester.pumpAndSettle();
 
     expect(find.text('Olá, aluno!'), findsNothing);
 
-    expect(find.text('Minhas aulas'), findsNothing);
+    expect(find.text('Quero ser aluno'), findsOneWidget);
 
-    expect(find.byIcon(Icons.login), findsOneWidget);
+    expect(find.text('Já sou aluno? Entrar'), findsOneWidget);
 
     await esperarSnackBarSumir(tester);
   });
@@ -214,7 +375,7 @@ void main() {
 
   testWidgets('Logado, o aluno ve as aulas e confirma presenca',
       (WidgetTester tester) async {
-    await tester.pumpWidget(const FluentPathApp());
+    await abrirApp(tester);
 
     await entrarComoAluno(tester);
 
@@ -235,7 +396,7 @@ void main() {
 
   testWidgets('Cancelar uma aula pede confirmacao e tira da lista',
       (WidgetTester tester) async {
-    await tester.pumpWidget(const FluentPathApp());
+    await abrirApp(tester);
 
     await entrarComoAluno(tester);
 
@@ -262,7 +423,7 @@ void main() {
 
   testWidgets('Agendar sem escolher tudo mostra aviso',
       (WidgetTester tester) async {
-    await tester.pumpWidget(const FluentPathApp());
+    await abrirApp(tester);
 
     await entrarComoAluno(tester);
 

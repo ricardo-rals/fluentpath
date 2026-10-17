@@ -22,7 +22,8 @@ class TelaDetalheDica extends StatelessWidget {
             Row(
               children: [
                 CircleAvatar(
-                  backgroundColor: tema.colorScheme.primary.withValues(alpha: 0.12),
+                  backgroundColor:
+                      tema.colorScheme.primary.withValues(alpha: 0.12),
                   foregroundColor: tema.colorScheme.primary,
                   child: const Icon(Icons.lightbulb_outline),
                 ),

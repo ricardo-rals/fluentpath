@@ -31,7 +31,7 @@ class FluentPathApp extends StatelessWidget {
         locale: const Locale('pt', 'BR'),
         supportedLocales: const [Locale('pt', 'BR')],
         localizationsDelegates: GlobalMaterialLocalizations.delegates,
-        initialRoute: Rotas.dicas,
+        initialRoute: Rotas.inicial,
         routes: Rotas.mapa,
       ),
     );

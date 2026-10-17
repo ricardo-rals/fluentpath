@@ -17,6 +17,7 @@ class TelaBoasVindas extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Início'),
+        automaticallyImplyLeading: false,
         actions: const [BotaoSair()],
       ),
       body: ListView(
@@ -54,6 +55,12 @@ class TelaBoasVindas extends StatelessWidget {
             titulo: 'Minhas aulas',
             descricao: 'Veja, agende e confirme suas aulas',
             onTap: () => Navigator.pushNamed(context, Rotas.minhasAulas),
+          ),
+          _Atalho(
+            icone: Icons.workspace_premium_outlined,
+            titulo: 'Planos',
+            descricao: 'Conheça os planos e peça para mudar o seu',
+            onTap: () => Navigator.pushNamed(context, Rotas.planos),
           ),
         ],
       ),
