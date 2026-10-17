@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 
 import 'data/servico_dados.dart';
@@ -27,6 +28,9 @@ class FluentPathApp extends StatelessWidget {
         title: 'FluentPath',
         debugShowCheckedModeBanner: false,
         theme: _tema(),
+        locale: const Locale('pt', 'BR'),
+        supportedLocales: const [Locale('pt', 'BR')],
+        localizationsDelegates: GlobalMaterialLocalizations.delegates,
         initialRoute: Rotas.dicas,
         routes: Rotas.mapa,
       ),

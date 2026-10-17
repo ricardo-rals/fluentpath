@@ -20,4 +20,12 @@ class Aula {
       status: StatusAula.values.byName(json['status'] as String),
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'titulo': titulo,
+      'data': data.toIso8601String(),
+      'status': status.name,
+    };
+  }
 }

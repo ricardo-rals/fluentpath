@@ -1,26 +1,26 @@
 [
   {
     "titulo": "Verb To Be",
-    "conteudo": "O verbo to be significa ser ou estar. No presente ele muda conforme o sujeito: I am, you are, he is, she is, it is, we are, they are.\n\nExemplos:\nI am a student. (Eu sou estudante.)\nShe is at home. (Ela está em casa.)\n\nNa negativa, acrescente not: I am not tired. Na pergunta, inverta a ordem: Are you ready?"
+    "conteudo": "O verbo **to be** significa __ser__ ou __estar__. No presente, ele muda conforme o sujeito.\n\n# Conjugação\n- **I** am\n- **You / We / They** are\n- **He / She / It** is\n\n# Exemplos\n- I **am** a student. (Eu sou estudante.)\n- She **is** at home. (Ela está em casa.)\n\n# Negativa e pergunta\nNa negativa, acrescente **not**: I am __not__ tired.\nNa pergunta, inverta a ordem: **Are** you ready?"
   },
   {
     "titulo": "Simple Past",
-    "conteudo": "O Simple Past fala de ações que começaram e terminaram no passado.\n\nVerbos regulares ganham -ed: work → worked, play → played.\nVerbos irregulares têm forma própria: go → went, eat → ate, see → saw.\n\nNa negativa e na pergunta use did e o verbo volta para a forma base: I didn't go. Did you see it?"
+    "conteudo": "O **Simple Past** fala de ações que __começaram e terminaram__ no passado.\n\n# Verbos regulares\nGanham **-ed** no final:\n- work → work**ed**\n- play → play**ed**\n\n# Verbos irregulares\nTêm forma própria, que precisa ser memorizada:\n- go → **went**\n- eat → **ate**\n- see → **saw**\n\n# Negativa e pergunta\nUse **did** e o verbo volta para a __forma base__:\n- I **didn't** go.\n- **Did** you see it?"
   },
   {
     "titulo": "Present Continuous",
-    "conteudo": "Usado para ações que estão acontecendo agora. A estrutura é to be + verbo com -ing.\n\nExemplos:\nI am studying English.\nThey are watching a movie.\n\nPalavras que costumam acompanhar: now, right now, at the moment."
+    "conteudo": "Usado para ações que estão acontecendo __agora__.\n\n# Estrutura\n**to be** + verbo com **-ing**\n\n# Exemplos\n- I **am studying** English.\n- They **are watching** a movie.\n\n# Palavras que costumam acompanhar\n- __now__\n- __right now__\n- __at the moment__"
   },
   {
     "titulo": "Artigos A e An",
-    "conteudo": "A e an significam um ou uma. A escolha depende do som da palavra seguinte, não da letra.\n\nUse a antes de som de consoante: a book, a university (som de \"iu\").\nUse an antes de som de vogal: an apple, an hour (o h é mudo)."
+    "conteudo": "**A** e **an** significam __um__ ou __uma__. A escolha depende do **som** da palavra seguinte, não da letra.\n\n# Use a\nAntes de som de __consoante__:\n- **a** book\n- **a** university (som de \"iu\")\n\n# Use an\nAntes de som de __vogal__:\n- **an** apple\n- **an** hour (o h é mudo)"
   },
   {
     "titulo": "Preposições In, On e At",
-    "conteudo": "Para tempo:\nat para horários: at 7 o'clock.\non para dias e datas: on Monday, on May 5th.\nin para meses, anos e períodos: in July, in 2026, in the morning.\n\nPara lugar:\nat para pontos: at the bus stop.\non para superfícies: on the table.\nin para espaços fechados: in the room."
+    "conteudo": "**In**, **on** e **at** indicam __tempo__ e __lugar__, cada uma com seu uso.\n\n# Para tempo\n- **at** para horários: at 7 o'clock\n- **on** para dias e datas: on Monday, on May 5th\n- **in** para meses, anos e períodos: in July, in 2026, in the morning\n\n# Para lugar\n- **at** para pontos: at the bus stop\n- **on** para superfícies: on the table\n- **in** para espaços fechados: in the room"
   },
   {
     "titulo": "False Friends",
-    "conteudo": "Falsos cognatos são palavras parecidas com o português mas com outro significado.\n\nactually = na verdade (não \"atualmente\", que é currently)\npretend = fingir (não \"pretender\", que é intend)\npush = empurrar (não \"puxar\", que é pull)\nparents = pais (não \"parentes\", que é relatives)"
+    "conteudo": "Falsos cognatos são palavras __parecidas com o português__, mas com outro significado.\n\n# Cuidado com estas\n- **actually** = na verdade (não \"atualmente\", que é __currently__)\n- **pretend** = fingir (não \"pretender\", que é __intend__)\n- **push** = empurrar (não \"puxar\", que é __pull__)\n- **parents** = pais (não \"parentes\", que é __relatives__)"
   }
 ]

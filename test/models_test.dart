@@ -30,6 +30,18 @@ void main() {
     expect(aula.status, StatusAula.confirmada);
   });
 
+  test('Aula.toJson e o inverso de Aula.fromJson', () {
+    final original = Aula(titulo: 'Listening', data: DateTime(2026, 10, 27, 16, 30));
+
+    final copia = Aula.fromJson(original.toJson());
+
+    expect(copia.titulo, original.titulo);
+
+    expect(copia.data, original.data);
+
+    expect(copia.status, original.status);
+  });
+
   test('Usuario.fromJson le nome', () {
     expect(Usuario.fromJson({'nome': 'aluno'}).nome, 'aluno');
   });

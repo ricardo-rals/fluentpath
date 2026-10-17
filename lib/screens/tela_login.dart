@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../data/servico_dados.dart';
+import '../rotas.dart';
 
 class TelaLogin extends StatefulWidget {
   const TelaLogin({super.key});
@@ -41,7 +42,7 @@ class _TelaLoginState extends State<TelaLogin> {
       return;
     }
 
-    Navigator.pop(context);
+    Navigator.pushReplacementNamed(context, Rotas.boasVindas);
   }
 
   @override

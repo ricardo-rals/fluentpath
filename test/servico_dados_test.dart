@@ -1,12 +1,24 @@
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import 'package:shared_preferences/shared_preferences.dart';
+
 import 'package:fluentpath/data/servico_dados.dart';
+import 'package:fluentpath/models/aula.dart';
 import 'package:fluentpath/models/usuario.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
-  final servico = ServicoDados();
+  late ServicoDados servico;
+
+  setUp(() {
+    rootBundle.clear();
+
+    SharedPreferences.setMockInitialValues({});
+
+    servico = ServicoDados();
+  });
 
   test('servico carrega as dicas do JSON', () async {
     final dicas = await servico.carregarDicas();
@@ -17,7 +29,7 @@ void main() {
   });
 
   test('servico carrega as aulas do JSON', () async {
-    expect(await servico.carregarAulas(), isNotEmpty);
+    expect(await servico.carregarAulas(), hasLength(3));
   });
 
   test('servico guarda e limpa o usuario da sessao', () {
@@ -42,7 +54,57 @@ void main() {
     expect(servico.autenticar('aluno', '1234'), isTrue);
 
     expect(servico.usuario?.nome, 'aluno');
+  });
+
+  test('servico agenda aula em ordem de data e confirma presenca', () async {
+    final antes = (await servico.carregarAulas()).length;
+
+    await servico.agendarAula('Pronúncia', DateTime(2026, 10, 18, 9));
+
+    final aulas = servico.aulas;
+
+    expect(aulas.length, antes + 1);
+
+    expect(aulas.first.titulo, 'Pronúncia');
+
+    expect(aulas.first.status, StatusAula.agendada);
+
+    await servico.confirmarPresenca(aulas.first);
+
+    expect(servico.aulas.first.status, StatusAula.confirmada);
+  });
+
+  test('servico cancela aula e tira da lista', () async {
+    final aulas = await servico.carregarAulas();
+
+    final cancelada = aulas.first;
+
+    await servico.cancelarAula(cancelada);
+
+    expect(servico.aulas, hasLength(aulas.length - 1));
+
+    expect(servico.aulas, isNot(contains(cancelada)));
+  });
+
+  test('aulas continuam salvas depois de sair e ao reabrir o app', () async {
+    servico.login(const Usuario(nome: 'aluno'));
+
+    await servico.agendarAula('Pronúncia', DateTime(2026, 10, 18, 9));
+
+    await servico.cancelarAula(servico.aulas.last);
 
     servico.logout();
+
+    expect(servico.aulas, hasLength(3));
+
+    final reaberto = ServicoDados();
+
+    final aulas = await reaberto.carregarAulas();
+
+    expect(aulas, hasLength(3));
+
+    expect(aulas.first.titulo, 'Pronúncia');
+
+    expect(aulas.any((aula) => aula.titulo.startsWith('Listening')), isFalse);
   });
 }

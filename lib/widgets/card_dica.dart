@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../models/dica.dart';
+import 'conteudo_formatado.dart';
 
 class CardDica extends StatelessWidget {
   final Dica dica;
@@ -29,7 +30,7 @@ class CardDica extends StatelessWidget {
         subtitle: Padding(
           padding: const EdgeInsets.only(top: 4),
           child: Text(
-            dica.conteudo,
+            textoSimples(dica.conteudo),
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
           ),

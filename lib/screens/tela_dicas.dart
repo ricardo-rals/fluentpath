@@ -84,6 +84,11 @@ class _AcaoSessao extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Text('Olá, ${servico.usuario!.nome}'),
+          IconButton(
+            icon: const Icon(Icons.home_outlined),
+            tooltip: 'Início',
+            onPressed: () => Navigator.pushNamed(context, Rotas.boasVindas),
+          ),
           const BotaoSair(),
         ],
       );
