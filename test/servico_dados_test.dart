@@ -31,4 +31,18 @@ void main() {
 
     expect(servico.logado, isFalse);
   });
+
+  test('servico aceita so a credencial aluno / 1234', () {
+    expect(servico.autenticar('aluno', 'errada'), isFalse);
+
+    expect(servico.autenticar('outro', '1234'), isFalse);
+
+    expect(servico.logado, isFalse);
+
+    expect(servico.autenticar('aluno', '1234'), isTrue);
+
+    expect(servico.usuario?.nome, 'aluno');
+
+    servico.logout();
+  });
 }

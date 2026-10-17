@@ -8,6 +8,10 @@ import '../models/dica.dart';
 import '../models/usuario.dart';
 
 class ServicoDados extends ChangeNotifier {
+  static const _usuarioValido = 'aluno';
+
+  static const _senhaValida = '1234';
+
   Usuario? _usuario;
 
   Usuario? get usuario => _usuario;
@@ -24,6 +28,16 @@ class ServicoDados extends ChangeNotifier {
     final lista = await _lerLista('assets/data/aulas.json');
 
     return lista.map((json) => Aula.fromJson(json)).toList();
+  }
+
+  bool autenticar(String usuario, String senha) {
+    if (usuario != _usuarioValido || senha != _senhaValida) {
+      return false;
+    }
+
+    login(Usuario(nome: usuario));
+
+    return true;
   }
 
   void login(Usuario usuario) {

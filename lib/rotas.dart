@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'screens/tela_detalhe_dica.dart';
 import 'screens/tela_dicas.dart';
+import 'screens/tela_login.dart';
 
 class Rotas {
   static const dicas = '/';
@@ -17,5 +18,6 @@ class Rotas {
   static Map<String, WidgetBuilder> get mapa => {
         dicas: (_) => const TelaDicas(),
         detalheDica: (_) => const TelaDetalheDica(),
+        login: (_) => const TelaLogin(),
       };
 }

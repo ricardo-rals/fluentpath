@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../data/servico_dados.dart';
 import '../models/dica.dart';
 import '../rotas.dart';
+import '../widgets/botao_sair.dart';
 import '../widgets/card_dica.dart';
 
 class TelaDicas extends StatefulWidget {
@@ -26,7 +27,10 @@ class _TelaDicasState extends State<TelaDicas> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Dicas')),
+      appBar: AppBar(
+        title: const Text('Dicas'),
+        actions: const [_AcaoSessao()],
+      ),
       body: FutureBuilder<List<Dica>>(
         future: _dicas,
         builder: (context, snapshot) {
@@ -37,7 +41,7 @@ class _TelaDicasState extends State<TelaDicas> {
           if (snapshot.hasError) {
             return const _Aviso(
               icone: Icons.error_outline,
-              texto: 'Nao foi possivel carregar as dicas',
+              texto: 'Não foi possível carregar as dicas',
             );
           }
 
@@ -64,6 +68,31 @@ class _TelaDicasState extends State<TelaDicas> {
           );
         },
       ),
+    );
+  }
+}
+
+class _AcaoSessao extends StatelessWidget {
+  const _AcaoSessao();
+
+  @override
+  Widget build(BuildContext context) {
+    final servico = context.watch<ServicoDados>();
+
+    if (servico.logado) {
+      return Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text('Olá, ${servico.usuario!.nome}'),
+          const BotaoSair(),
+        ],
+      );
+    }
+
+    return IconButton(
+      icon: const Icon(Icons.login),
+      tooltip: 'Entrar',
+      onPressed: () => Navigator.pushNamed(context, Rotas.login),
     );
   }
 }
